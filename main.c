@@ -1,9 +1,6 @@
 #include <stdio.h>
 
-typedef int KeyType;
-
-//基数
-
+//基数 radix(data,6)
 int digit(int data[],int size){//计算出最大数的位数
     int tmp=0,rv=1;
     for(int i=0;i<size;i++)
@@ -38,27 +35,15 @@ void radix(int data[],int size){
                 data[m++]=tmp[j][k];
             }
         }
+        //打印
+        for(int i=0;i<size;i++){
+            printf("%d ",data[i]);
+        }printf("\n\n");
+        sleep(1);
     }
 }
 
-/*
-void radix(int data[],int size){
-    int maxdi=digit(data,size),n,k=0;
-    for(int i=0;i<maxdi;i*=10){
-        int tmp[10][1000]={0};
-        for(int j=0;j<size;j++){
-            n=(data[j]/i)%10;
-            tmp[n][j]=data[j];
-        }
-        for(int p=0;p<10;p++)
-            for(int j=0;j<size;j++){
-                if(tmp[p][j]!=0)
-                    data[k++]=tmp[p][j];
-            }
-    }
-}
-*/
-//堆  第一个不可以用
+//堆 Heap(data,6);
 void HeapAdijust(int data[],int s,int e){
     int tmp=data[s];
     for(int i=2*s+1;i<=e;i*=2,i+=1){
@@ -76,22 +61,73 @@ void CreatHeap(int data[],int size){
 }
 void Heap(int data[],int size){
     CreatHeap(data,size);
+    printf("调整堆：\n");
     for(int i=size;i>0;i--){
         int x=data[0];
         data[0]=data[i-1];
         data[i-1]=x;
         HeapAdijust(data,0,i-2);
+        //打印
+        for(int i=0;i<size;i++){
+            printf("%d ",data[i]);
+        }printf("\n\n");
+        sleep(1);
     }
 }
 
-//归并
+//归并 Merge(data,5)
+void Merge(int dataR[],int dataS[],int low,int mid,int high){
+    int i=low,j=mid+1,k=low;
+    while (i<=mid&&j<=high) {
+        if(dataR[i]<dataR[j])
+            dataS[k++]=dataR[i++];
+        else
+            dataS[k++]=dataR[j++];
+    }
+    while (i<=mid) dataS[k++]=dataR[i++];
+    while (j<=high) dataS[k++]=dataR[j++];
+}
+void Msort(int dataR[],int dataS[],int low,int high){
+    if(low==high)dataS[low]=dataR[low];
+    else{
+        int mid=(low+high)/2;
+        int S[10]={0};//MAX =20;
+        Msort(dataR,S,low,mid);
+        Msort(dataR,S,mid+1,high);
+        Merge(S,dataS,low,mid,high);
+    }
+}
+void MergeSort(int data[],int size){
+    Msort(data,data,0,size);
+}
 
+//快速 QuickSort(data,6)
+int partition(int data[],int low,int high){
+    int tmp=data[low],key=data[low];
+    while (low<high) {
+        while (low<high&&data[high]>=key) --high;
+        data[low]=data[high];
+        while (low<high&&data[low]<=key) ++low;
+        data[high]=data[low];
+    }data[low]=tmp;
+    return low;
+}
+void QSort(int data[],int low,int high){
+    if(low<high){
+        int a=partition(data,low,high);
+        QSort(data,low,a-1);
+        QSort(data,a+1,high);
+    }
+}
+void QuickSort(int data[],int size){
+    QSort(data,0,size);
+}
 
 int main()
 {
-    int data[]={9,22,7,14,289};
-    Heap(data,5);
-    for(int i=0;i<5;i++){
+    int data[]={8,5,9,2,7,6,4};
+    QuickSort(data,7);
+    for(int i=0;i<7;i++){
         printf("%d ",data[i]);
-    }printf("\n");
+    }printf("\n\n");
 }
