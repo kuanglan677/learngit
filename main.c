@@ -58,11 +58,11 @@ void radix(int data[],int size){
     }
 }
 */
-//堆  第一个是哨兵，size=xx-1;
+//堆  第一个不可以用
 void HeapAdijust(int data[],int s,int e){
     int tmp=data[s];
-    for(int i=2*s;i<=e;i*=2){
-        if(i<(e-1)&&data[i]<data[i+1])
+    for(int i=2*s+1;i<=e;i*=2,i+=1){
+        if(i<e&&data[i]<data[i+1])
             i++;
         if(tmp>data[i])break;
         data[s]=data[i];s=i;
@@ -70,25 +70,28 @@ void HeapAdijust(int data[],int s,int e){
     data[s]=tmp;
 }
 void CreatHeap(int data[],int size){
-    for(int i=size/2;i>0;i--){
-        HeapAdijust(data,i,size);
+    for(int i=size/2;i>=0;i--){
+        HeapAdijust(data,i,size-1);
     }
 }
 void Heap(int data[],int size){
     CreatHeap(data,size);
-    for(int i=size;i>1;i--){
-        int x=data[1];
-        data[1]=data[i];
-        data[i]=x;
-        HeapAdijust(data,1,i-1);
+    for(int i=size;i>0;i--){
+        int x=data[0];
+        data[0]=data[i-1];
+        data[i-1]=x;
+        HeapAdijust(data,0,i-2);
     }
 }
 
+//归并
+
+
 int main()
 {
-    int data[]={0,22,7,14,289,23,123,43,21,435};
-    Heap(data,9);
-    for(int i=0;i<10;i++){
+    int data[]={9,22,7,14,289};
+    Heap(data,5);
+    for(int i=0;i<5;i++){
         printf("%d ",data[i]);
-    }
+    }printf("\n");
 }
