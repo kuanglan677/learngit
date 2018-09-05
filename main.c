@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <string.h>
 //基数 radix(data,6)
 int digit(int data[],int size){//计算出最大数的位数
     int tmp=0,rv=1;
@@ -75,7 +75,7 @@ void Heap(int data[],int size){
     }
 }
 
-//归并 Merge(data,5)
+//归并 MergeSort(data,5)
 void Merge(int dataR[],int dataS[],int low,int mid,int high){
     int i=low,j=mid+1,k=low;
     while (i<=mid&&j<=high) {
@@ -101,7 +101,7 @@ void MergeSort(int data[],int size){
     Msort(data,data,0,size);
 }
 
-//快速 QuickSort(data,6)
+//快速 QuickSort(data,5)
 int partition(int data[],int low,int high){
     int tmp=data[low],key=data[low];
     while (low<high) {
@@ -123,11 +123,26 @@ void QuickSort(int data[],int size){
     QSort(data,0,size);
 }
 
+//读入数组
+int ReadFromTxt(int data[],char str[]){
+    FILE*fin;
+    fin=fopen(str,"r");
+    if(fin!=NULL){
+        int i=0;
+        while((fscanf(fin,"%d",&data[i++]))!=EOF);
+        fclose(fin);
+        return i-1;
+    }
+}
+
 int main()
 {
-    int data[]={8,5,9,2,7,6,4};
-    QuickSort(data,7);
-    for(int i=0;i<7;i++){
+    //int size=3;
+    //int data[100]={996,885,1000};
+    int data[100]={0};
+    int size=ReadFromTxt(data,"data.txt");
+    QuickSort(data,size-1);
+    for(int i=0;i<3;i++){
         printf("%d ",data[i]);
     }printf("\n\n");
 }
